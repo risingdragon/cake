@@ -4,6 +4,7 @@ App::uses('CakeEmail', 'Network/Email');
 
 class PostController extends AppController {
 	public $layout = 'post';
+	public $components = array('Paginator');
 
 	private function _send($post) {
 		$email = new CakeEmail('default');
@@ -15,7 +16,13 @@ class PostController extends AppController {
 	}
 
 	public function index() {
-		$this->set(['posts' => $this->Post->find('all')]);
+		$this->Paginator->settings = array(
+			'limit' => 5,
+			'order' => array(
+				'Post.created' => 'asc'
+			)
+		);
+		$this->set(['posts' => $this->Paginator->paginate('Post')]);
 	}
 
 	public function view($id) {

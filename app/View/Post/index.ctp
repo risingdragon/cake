@@ -3,6 +3,18 @@
 </p>
 
 <?php if (count($posts)) { ?>
+
+<div>
+<?php echo $this->Paginator->counter(array('format' => __('{:page}/{:pages}ページを表示'))); ?>
+</div>
+
+<ul class="pagination" style="margin-top:10px">
+<li><?php echo $this->Paginator->prev(__('≪'), array(), null, array('class' => 'prev disabled')); ?></li>
+<?php echo $this->Paginator->numbers(array('tag' => 'li', 'currentTag' => 'a', 'separator' => '', 'currentClass' => 'active')) ?>
+<li><?php echo $this->Paginator->next(__('≫'), array(), null, array('class' => 'next disabled')); ?></li>
+</ul>
+
+
 <table class="table table-striped">
 <tr>
 <th>Id</th>
