@@ -3,12 +3,12 @@ App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
 
 class PostController extends AppController {
-	public $layout = 'post';
+	public $layout = 'default';
 	public $components = array('Paginator');
 
 	private function _send($post) {
 		$email = new CakeEmail('default');
-		$email->template('post', 'post');
+		$email->template('default', 'default');
 		$email->to($post['email']);
 		$email->subject($post['title']);
 		$email->viewVars($post);
