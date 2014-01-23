@@ -11,7 +11,13 @@
 <body>
 
 <div class="container">
-<h1>CakePostサンプル</h1>
+
+<nav class="navbar navbar-default" role="navigation">
+<div class="navbar-header">
+<a class="navbar-brand" href="<?php echo Router::url(array('action' => '/')) ?>">CakePostサンプル</a>
+</div>
+</nav>
+
 <?php echo $this->Session->flash(); ?>
 <?php echo $this->fetch("content") ?>
 </div>
