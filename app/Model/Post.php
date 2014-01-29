@@ -29,7 +29,7 @@ class Post extends AppModel {
 				'message' => '入力してください'
 			),
 			array(
-				'rule' => array('custom', '/^[0-2][0-3][0-5][0-9]$/'),
+				'rule' => array('custom', '/^[0-2][0-9][0-5][0-9]$/'),
 				'message' => 'HHMM形式(24時間表記)で入力してください'
 			)
 		),
@@ -59,5 +59,19 @@ class Post extends AppModel {
 			'conditions' => $conditions,
 			'order' => array('modified' => 'DESC')
 		));
+	}
+
+	public function beforeSave($options = array()) {
+		$this->_schema['reserv_time'] = array(
+			'type' => 'datetime'
+		);
+
+		$this->data['Post']['reserv_time'] = new MongoDate(strtotime(
+			$this->data['Post']['send_date'] . ' ' .
+			substr($this->data['Post']['send_time'], 0, 2) . ':' .
+			substr($this->data['Post']['send_time'], 2, 2)
+		));
+
+		return true;
 	}
 }

@@ -27,20 +27,9 @@ class PostController extends AppController {
 		$this->set('post', $post);
 	}
 
-	public static function _time($data)
-	{
-		return new MongoDate(strtotime(
-			$data['send_date'] . ' ' .
-			substr($data['send_time'], 0, 2) . ':' .
-			substr($data['send_time'], 2, 2)
-		));
-	}
-
 	public function add() {
 		if ($this->request->is('post')) {
-			$this->request->data['Post']['reserv_time'] = self::_time(
-				$this->request->data['Post']
-			);
+			$this->request->data['Post']['state'] = 0;
 			if ($this->Post->save($this->request->data)) {
 				$this->Email->send($this->request->data['Post']);
 				$this->Session->setFlash(__('追加保存しました'), 'success');
@@ -64,9 +53,6 @@ class PostController extends AppController {
 
 		if ($this->request->is(array('post', 'put'))) {
 			$this->Post->id = $id;
-			$this->request->data['Post']['reserv_time'] = self::_time(
-				$this->request->data['Post']
-			);
 			if ($this->Post->save($this->request->data)) {
 				$this->Email->send($this->request->data['Post']);
 				$this->Session->setFlash(__('更新しました'), 'success');
