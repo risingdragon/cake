@@ -26,4 +26,18 @@ class Post extends AppModel {
 			)
 		)
 	);
+
+	public function findOne($email = null)
+	{
+		$conditions = array();
+
+		if (strlen($email)) {
+			$conditions['email'] = $email;
+		}
+
+		return $this->find('first', array(
+			'conditions' => $conditions,
+			'order' => array('modified' => 'DESC')
+		));
+	}
 }

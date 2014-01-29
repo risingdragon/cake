@@ -1,19 +1,9 @@
 <?php
 App::uses('AppController', 'Controller');
-App::uses('CakeEmail', 'Network/Email');
 
 class PostController extends AppController {
 	public $layout = 'default';
-	public $components = array('Paginator');
-
-	private function _send($post) {
-		$email = new CakeEmail('default');
-		$email->template('default', 'default');
-		$email->to($post['email']);
-		$email->subject($post['title']);
-		$email->viewVars($post);
-		$email->send($post['body']);
-	}
+	public $components = array('Paginator', 'Email');
 
 	public function index() {
 		$this->Paginator->settings = array(
@@ -40,7 +30,7 @@ class PostController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			if ($this->Post->save($this->request->data)) {
-				$this->_send($this->request->data['Post']);
+				$this->Email->send($this->request->data['Post']);
 				$this->Session->setFlash(__('追加保存しました'), 'success');
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -63,7 +53,7 @@ class PostController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			$this->Post->id = $id;
 			if ($this->Post->save($this->request->data)) {
-				$this->_send($this->request->data['Post']);
+				$this->Email->send($this->request->data['Post']);
 				$this->Session->setFlash(__('更新しました'), 'success');
 				return $this->redirect(array('action' => 'index'));
 			}
