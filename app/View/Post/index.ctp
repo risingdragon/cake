@@ -21,16 +21,16 @@
 <table class="table table-striped">
 <tr>
 <th>Id</th>
-<th>Email</th>
+<th>送信時刻</th>
+<th>送信先</th>
 <th>タイトル</th>
 <th>作成時刻</th>
 <th></th>
 </tr>
 <?php foreach ($posts as $post): ?>
 <tr>
-<td>
-<?php echo $this->Html->link($post['Post']['id'], array('action' => 'edit', $post['Post']['id'])); ?>
-</td>
+<td><?php echo $this->Html->link($post['Post']['id'], array('action' => 'edit', $post['Post']['id'])); ?></td>
+<td><?php echo date('Y-m-d H:i', $post['Post']['reserv_time']->sec); ?></td>
 <td><?php echo $post['Post']['email'] ?></td>
 <td><?php echo $this->Html->link($post['Post']['title'], array('action' => 'view', $post['Post']['id'])); ?></td>
 <td><?php echo date('Y-m-d H:i:s', $post['Post']['created']->sec); ?></td>
