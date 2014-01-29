@@ -9,7 +9,7 @@ class PostController extends AppController {
 		$this->Paginator->settings = array(
 			'limit' => 5,
 			'order' => array(
-				'Post.created' => 'asc'
+				'Post.created' => 'DESC'
 			)
 		);
 		$this->set(['posts' => $this->Paginator->paginate('Post')]);
