@@ -8,6 +8,7 @@
 <?php echo $this->Html->script("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js") ?>
 <?php echo $this->Html->script("//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js") ?>
 <?php echo $this->Html->script("//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js") ?>
+<?php echo $this->Html->script("/js/common.js") ?>
 </head>
 <body>
 

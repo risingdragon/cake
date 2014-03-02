@@ -37,6 +37,9 @@ class PostController extends AppController {
 			} else {
 				$this->Session->setFlash(__('エラーがあります'), 'error');
 			}
+		} else {
+			$this->request->data['Post']['send_date'] = date("Y-m-d");
+			$this->request->data['Post']['send_time'] = date("Hi");
 		}
 		$this->render('form');
 	}

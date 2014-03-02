@@ -16,17 +16,17 @@ div.error-message {
 		<?php echo $this->Form->create('Post', ['role' => 'form', 'class' => 'form-horizontal']); ?>
 
 		<div class="form-group">
-		<label for="send_date" class="col-md-2 control-label">送信日(YYYY-MM-DD)</label>
-		<div class="col-md-2">
-		<?php echo $this->Form->input('send_date', ['class' => 'form-control', 'id' => 'send_date', 'label' => false]) ?>
-		</div>
-		</div>
-
-		<div class="form-group">
-		<label for="send_time" class="col-md-2 control-label">送信時刻(HHMM)</label>
-		<div class="col-md-2">
-		<?php echo $this->Form->input('send_time', ['class' => 'form-control', 'id' => 'send_time', 'label' => false]) ?>
-		</div>
+			<label for="send_date" class="col-md-2 control-label">送信時刻</label>
+			<div class="form-inline col-md-10">
+				<div class="pull-left ">
+				<?php echo $this->Form->input('send_date', ['class' => 'form-control', 'id' => 'send_date', 'label' => false, 'style' => 'width:150px']) ?>
+				</div>
+				<div class="pull-left">(YYYY-MM-DD)　</div>
+				<div class="pull-left">
+				<?php echo $this->Form->input('send_time', ['class' => 'form-control', 'id' => 'send_time', 'label' => false, 'style' => 'width:100px', 'maxlength' => 4]) ?>
+				</div>
+				<div class="pull-left">(HHMM)</div>
+			</div>
 		</div>
 
 		<div class="form-group">
@@ -67,31 +67,6 @@ div.error-message {
 <script>
 $(function(e)
 {
-	$.datepicker.regional["ja"] = {
-		clearText: "クリア", clearStatus: "日付をクリアします",
-		closeText: "閉じる", closeStatus: "変更せずに閉じます",
-		prevText: "&#x3c;前", prevStatus: "前月を表示します",
-		prevBigText: "&#x3c;&#x3c;", prevBigStatus: "前年を表示します",
-		nextText: "次&#x3e;", nextStatus: "翌月を表示します",
-		nextBigText: "&#x3e;&#x3e;", nextBigStatus: "翌年を表示します",
-		currentText: "今日", currentStatus: "今月を表示します",
-		monthNames: [
-			"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"
-		],
-		monthNamesShort: [
-			"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"
-		],
-		monthStatus: "表示する月を変更します", yearStatus: "表示する年を変更します",
-		weekHeader: "週", weekStatus: "暦週で第何週目かを表します",
-		dayNames: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
-		dayNamesShort: ["日","月","火","水","木","金","土"],
-		dayNamesMin: ["日","月","火","水","木","金","土"],
-		dayStatus: "週の始まりをDDにします", dateStatus: "Md日(D)",
-		dateFormat: "yy-mm-dd", firstDay: 0,
-		initStatus: "日付を選択します", isRTL: false,
-		showMonthAfterYear: true};
-	$.datepicker.setDefaults($.datepicker.regional["ja"]);
-
 	$("#send_date").datepicker();
 
 	$('#list').on("click", function(e)
@@ -101,8 +76,27 @@ $(function(e)
 
 	$("form").on("submit", function(e)
 	{
-		if (confirm("<?php echo $this->action == 'add' ? '追加' : '編集' ?>します。よろしいですか？") == false) {
-			e.preventDefault();
+		e.preventDefault();
+
+		Validator.init(this);
+		Validator.require("[required=required]");
+		Validator.date("#send_date");
+		Validator.number("#send_time");
+
+		var now  = new Date();
+		var nowstr =
+			now.getFullYear() + Tool.lpad(now.getMonth()+1, "0", 2) + Tool.lpad(now.getDate(), "0", 2) +
+			Tool.lpad(now.getHours(), "0", 2) + Tool.lpad(now.getMinutes(), "0", 2);
+		if (
+			($("#send_date").val().replace(/\-/g, "") + $("#send_time").val())
+			< nowstr
+		) Validator.showError($("#send_date"), "過去は指定できません");
+
+		if (Validator.isError()) return;
+
+		if (confirm("<?php echo $this->action == 'add' ? '追加' : '編集' ?>します。よろしいですか？")) {
+			$(this).off();
+			$(this).submit();
 		}
 	});
 });
